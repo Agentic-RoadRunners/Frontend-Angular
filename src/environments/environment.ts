@@ -1,10 +1,10 @@
 export const environment = {
-  production: true,
-  apiUrl: 'https://saferoad-gedncdhpamdsftge.canadacentral-01.azurewebsites.net/api',
-  signalrUrl: 'https://saferoad-gedncdhpamdsftge.canadacentral-01.azurewebsites.net',
+  production: false,
+  apiUrl: 'https://localhost:9001/api',
+  signalrUrl: 'https://localhost:9001',
   logLevel: 'verbose',
   mapbox: {
-    defaultCenter: { lat: 41.0082, lng: 28.9784 }, // İstanbul
+    defaultCenter: { lat: 41.0082, lng: 28.9784 },
     defaultZoom: 12,
   },
   upload: {
