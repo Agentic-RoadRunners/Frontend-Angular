@@ -1,0 +1,269 @@
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20000;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  animation: backdrop-in 0.2s ease;
+}
+
+@keyframes backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 1.25rem;
+  padding: 1.75rem;
+  width: min(92vw, 460px);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7);
+  animation: card-in 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-family: system-ui, sans-serif;
+  color: #f1f5f9;
+}
+
+@keyframes card-in {
+  from { transform: scale(0.88) translateY(20px); opacity: 0; }
+  to { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+/* ── Header ─────────────────────────── */
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.modal-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.modal-emoji {
+  font-size: 1.75rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.modal-title {
+  margin: 0 0 0.2rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.modal-subtitle {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.modal-counter {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #3b82f6;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.modal-counter span {
+  font-weight: 400;
+  color: #475569;
+  font-size: 0.85rem;
+}
+
+/* ── Progress bar ───────────────────── */
+.progress-track {
+  height: 4px;
+  background: #0f172a;
+  border-radius: 2px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb, #3b82f6);
+  border-radius: 2px;
+  transition: width 0.35s ease;
+}
+
+/* ── Incident Card ──────────────────── */
+.incident-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 0.875rem;
+  padding: 1rem 1.125rem;
+  margin-bottom: 1.25rem;
+}
+
+.incident-icon-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.incident-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.incident-category-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  width: fit-content;
+}
+
+.incident-title {
+  font-size: 0.95rem;
+  color: #e2e8f0;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.incident-coords {
+  font-size: 0.68rem;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* ── Question ───────────────────────── */
+.verify-question {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #94a3b8;
+  margin: 0 0 1.25rem;
+  line-height: 1.5;
+}
+
+/* ── Action buttons ─────────────────── */
+.action-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.btn-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 1rem 0.75rem;
+  border-radius: 0.875rem;
+  font-family: system-ui, sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 2px solid transparent;
+}
+
+.btn-action i {
+  font-size: 1.6rem;
+}
+
+.btn-action span {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.btn-action small {
+  font-size: 0.68rem;
+  opacity: 0.7;
+  font-weight: 400;
+}
+
+.btn-action:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-verify {
+  background: #052e16;
+  border-color: #16a34a;
+  color: #86efac;
+}
+
+.btn-verify:hover:not(:disabled) {
+  background: #14532d;
+  border-color: #22c55e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.25);
+}
+
+.btn-dispute {
+  background: #450a0a;
+  border-color: #b91c1c;
+  color: #fca5a5;
+}
+
+.btn-dispute:hover:not(:disabled) {
+  background: #7f1d1d;
+  border-color: #ef4444;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.25);
+}
+
+/* ── Skip ───────────────────────────── */
+.btn-skip {
+  width: 100%;
+  padding: 0.625rem;
+  background: transparent;
+  border: 1px solid #334155;
+  border-radius: 0.625rem;
+  color: #475569;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  font-family: system-ui, sans-serif;
+}
+
+.btn-skip:hover:not(:disabled) {
+  color: #94a3b8;
+  border-color: #475569;
+}
+
+/* ── Spinner ────────────────────────── */
+.btn-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

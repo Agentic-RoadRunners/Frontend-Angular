@@ -1,0 +1,91 @@
+<div class="comments-panel">
+  <!-- Header -->
+  <div class="panel-header">
+    <div class="header-info">
+      <i class="fas fa-comment header-icon"></i>
+      <div>
+        <h3>Reviews</h3>
+        <span class="incident-title">{{ incident().title || incident().categoryName }}</span>
+      </div>
+    </div>
+    <button class="btn-close" (click)="onClose()" aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <!-- Comment list -->
+  <div class="comment-list">
+    @if (isLoading()) {
+      <div class="state-message">
+        <div class="spinner"></div>
+        <span>Reviews are loading…</span>
+      </div>
+    } @else if (error()) {
+      <div class="state-message error">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>{{ error() }}</span>
+        <button class="btn-retry" (click)="loadComments()">Try Again</button>
+      </div>
+    } @else if (comments().length === 0) {
+      <div class="state-message empty">
+        <i class="fas fa-comment-slash"></i>
+        <span>No reviews yet. Be the first to review!</span>
+      </div>
+    } @else {
+      @for (comment of comments(); track comment.id) {
+        <div class="comment-item">
+          <div class="avatar">{{ getInitials(comment.userName) }}</div>
+          <div class="comment-body">
+            <div class="comment-meta">
+              <span class="comment-author">{{ comment.userName ?? 'Anonymous' }}</span>
+              <span class="comment-time">{{ getTimeAgo(comment.createdAt) }}</span>
+              @if (isOwnComment(comment)) {
+                <button
+                  class="btn-delete-comment"
+                  (click)="deleteComment(comment.id)"
+                  title="Delete comment"
+                >
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              }
+            </div>
+            <p class="comment-content">{{ comment.content }}</p>
+          </div>
+        </div>
+      }
+    }
+  </div>
+
+  <!-- Compose area -->
+  <div class="compose-area">
+    @if (auth.isAuthenticated()) {
+      <div class="compose-row">
+        <textarea
+          class="comment-input"
+          placeholder="Yorumunuzu yazın…"
+          rows="2"
+          [(ngModel)]="newCommentText"
+          (keydown.enter)="submitComment()"
+        ></textarea>
+        <button
+          class="btn-submit"
+          [disabled]="!newCommentText.trim() || isSubmitting()"
+          (click)="submitComment()"
+        >
+          @if (isSubmitting()) {
+            <div class="btn-spinner"></div>
+          } @else {
+            <i class="fas fa-paper-plane"></i>
+          }
+        </button>
+      </div>
+      <span class="compose-hint">Enter to submit · Shift+Enter for new line</span>
+    } @else {
+      <div class="login-prompt">
+        <i class="fas fa-lock"></i>
+        <span>To make a review, please</span>
+        <button class="btn-login-link" (click)="goToLogin()">log in</button>
+      </div>
+    }
+  </div>
+</div>

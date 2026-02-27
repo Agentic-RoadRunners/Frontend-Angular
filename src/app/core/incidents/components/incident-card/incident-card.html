@@ -1,0 +1,62 @@
+<div class="incident-card" [style.--cat-color]="getCategoryColor(incident().categoryId)">
+
+  @if (incident().photoUrls && incident().photoUrls.length > 0) {
+    <div class="card-image">
+      <img [src]="incident().photoUrls[0]" [alt]="incident().title" />
+    </div>
+  }
+
+  <div class="card-header">
+    <span class="category-badge" [style.--cat-color]="getCategoryColor(incident().categoryId)">
+      <i [class]="getCategoryIcon(incident().categoryId)"></i>
+      {{ incident().categoryName }}
+    </span>
+    <span class="status-badge" [class]="getStatusClass(incident().status)">
+      {{ getStatusLabel(incident().status) }}
+    </span>
+  </div>
+
+  <div class="card-body">
+    <h3 class="incident-title">{{ incident().title }}</h3>
+    <p class="incident-desc">{{ incident().description }}</p>
+
+    <div class="card-meta-row">
+      <span class="reporter-info">
+        <i class="fas fa-user-circle"></i>
+        {{ incident().reporterName ?? 'Anonymous' }}
+      </span>
+      <span class="time-ago">
+        <i class="fas fa-clock"></i>
+        {{ timeAgo(incident().createdAt) }}
+      </span>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <div class="footer-meta">
+      <span class="meta-item">
+        <i class="fas fa-building-columns"></i>
+        {{ incident().municipalityName ?? 'Unassigned' }}
+      </span>
+      <span class="meta-item">
+        <i class="fas fa-calendar-days"></i>
+        {{ formatDate(incident().createdAt) }}
+      </span>
+    </div>
+    <div class="footer-stats">
+      <span class="stat-item stat-positive">
+        <i class="fas fa-thumbs-up"></i>
+        {{ incident().positiveVerifications }}
+      </span>
+      <span class="stat-item stat-negative">
+        <i class="fas fa-thumbs-down"></i>
+        {{ incident().negativeVerifications }}
+      </span>
+      <span class="stat-item">
+        <i class="fas fa-comment"></i>
+        {{ incident().commentCount }}
+      </span>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,31 @@
+<div class="profile-header">
+  <!-- Avatar -->
+  <div class="avatar-section">
+    @if (profile.avatarUrl) {
+      <img class="avatar-img" [src]="profile.avatarUrl" [alt]="profile.fullName" />
+    } @else {
+      <div class="avatar-placeholder">{{ initials }}</div>
+    }
+    <div class="status-dot" [class.active]="profile.status === 'Active'"></div>
+  </div>
+
+  <!-- Info -->
+  <div class="info-section">
+    <h1 class="user-name">{{ profile.fullName || 'No Name' }}</h1>
+    <p class="user-email">
+      <i class="fas fa-envelope"></i>
+      {{ profile.email }}
+    </p>
+    <div class="meta-row">
+      <span class="badge status-badge">{{ profile.status }}</span>
+      <span class="badge trust-badge" [style.background]="trustColor">
+        <i class="fas fa-shield-halved"></i>
+        Trust: {{ profile.trustScore }}
+      </span>
+      <span class="badge date-badge">
+        <i class="fas fa-calendar"></i>
+        Member since {{ profile.createdAt | date:'mediumDate' }}
+      </span>
+    </div>
+  </div>
+</div>

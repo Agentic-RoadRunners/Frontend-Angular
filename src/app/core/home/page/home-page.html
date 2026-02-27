@@ -1,0 +1,116 @@
+<div class="home">
+  <!-- ── Header ─────────────────────────────────── -->
+  @if (!auth.isAuthenticated()) {
+    <header class="header">
+      <div class="header-inner">
+        <div class="brand">
+          <i class="fa-solid fa-route brand-icon"></i>
+          <span>SafeRoads</span>
+        </div>
+        <div class="header-actions">
+          <a routerLink="/login" class="btn-ghost">Sign In</a>
+          <a routerLink="/signup" class="btn-primary">
+            <i class="fas fa-user-plus"></i> Get Started
+          </a>
+        </div>
+      </div>
+    </header>
+  }
+
+  <!-- ── Hero ───────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="hero-badge">
+          <i class="fas fa-shield-halved"></i>
+          Community-Powered Road Safety
+        </div>
+        <h1 class="hero-title">
+          Safer Roads,<br />
+          <span class="accent">Together.</span>
+        </h1>
+        <p class="hero-sub">
+          Report road hazards, track incidents in real time, and help your community navigate safer.
+          Built by people, for people.
+        </p>
+        @if (!auth.isAuthenticated()) {
+          <div class="hero-cta">
+            <a routerLink="/signup" class="btn-primary btn-lg">
+              <i class="fas fa-user-plus"></i> Create Free Account
+            </a>
+            <a routerLink="/login" class="btn-ghost btn-lg">
+              Sign In <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+        }
+      </div>
+
+      <div class="hero-map">
+        <app-home-map />
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Stats ──────────────────────────────────── -->
+  <section class="stats">
+    <div class="stats-inner">
+      @for (stat of stats(); track stat.label) {
+        <div class="stat-card">
+          <div
+            class="stat-icon-wrap"
+            [style.background]="stat.color + '18'"
+            [style.color]="stat.color"
+          >
+            <i [class]="stat.icon"></i>
+          </div>
+          <div class="stat-body">
+            <div class="stat-value">{{ stat.displayed }}{{ stat.suffix }}</div>
+            <div class="stat-label">{{ stat.label }}</div>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- ── Features ───────────────────────────────── -->
+  <section class="features">
+    <div class="features-inner">
+      <h2>Everything you need for road safety</h2>
+      <p class="features-sub">
+        SafeRoads gives communities the tools to report, track, and respond to road incidents in
+        real time — no authority required.
+      </p>
+      <div class="features-grid">
+        @for (f of features; track f.title) {
+          <div class="feature-card">
+            <div class="feature-icon" [style.background]="f.bg" [style.color]="f.color">
+              <i [class]="f.icon"></i>
+            </div>
+            <h3>{{ f.title }}</h3>
+            <p>{{ f.desc }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ────────────────────────────────────── -->
+  @if (!auth.isAuthenticated()) {
+    <section class="cta-section">
+      <div class="cta-inner">
+        <div class="cta-badge"><i class="fas fa-rocket"></i> Free to use, always</div>
+        <h2>Ready to make your roads safer?</h2>
+        <p>Join thousands of users already contributing to safer communities.</p>
+        <div class="cta-buttons">
+          <a routerLink="/signup" class="btn-primary btn-lg">Create Free Account</a>
+          <a routerLink="/login" class="btn-ghost btn-lg">I already have an account</a>
+        </div>
+      </div>
+    </section>
+  }
+
+  <!-- ── Footer ─────────────────────────────────── -->
+  <footer class="footer">
+    <p>&copy; 2025 SafeRoads &middot; Safer Roads, Together</p>
+  </footer>
+</div>

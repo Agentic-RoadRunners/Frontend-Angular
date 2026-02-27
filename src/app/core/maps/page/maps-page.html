@@ -1,0 +1,95 @@
+<div class="maps-page">
+  <!-- Toolbar -->
+  <header class="toolbar">
+    <div class="toolbar-left"></div>
+    <div class="toolbar-actions">
+      <button
+        class="btn-route"
+        [class.active]="routeButtonActive"
+        (click)="onPlanRouteClick()"
+      >
+        {{ routeButtonLabel }}
+      </button>
+      <button
+        class="btn-add-incident"
+        [class.active]="isSelectingLocation"
+        (click)="toggleSelectionMode()"
+      >
+        {{ isSelectingLocation ? '✕ Cancel' : '📍 Add Incident' }}
+      </button>
+      <button class="btn-heatmap" (click)="toggleHeatmap()">
+        {{ heatmapVisible ? '🔥 Hide Heatmap' : '🔥 Show Heatmap' }}
+      </button>
+    </div>
+  </header>
+
+  <!-- Incident selection banner -->
+  @if (isSelectingLocation) {
+    <div class="selection-banner">🖱️ Click on the map to place an incident marker</div>
+  }
+
+  <!-- Route pick banners -->
+  @if (routePickMode === 'start') {
+    <div class="selection-banner route-banner">
+      🟢 Click on the map to set your starting point
+    </div>
+  }
+  @if (routePickMode === 'end') {
+    <div class="selection-banner route-banner route-banner-end">
+      🔴 Now click on the map to set your     destination
+    </div>
+  }
+
+  <!-- Map -->
+  <div class="map-wrapper" [class.selecting]="isSelectingLocation || routePickMode !== 'none'">
+    <app-map-view
+      [centerLat]="centerLat"
+      [centerLng]="centerLng"
+      [heatPoints]="heatPoints"
+      [selectionMode]="isSelectingLocation"
+      [incidents]="incidents"
+      [routePickMode]="routePickMode"
+      (mapClick)="onMapClick($event)"
+      (routePointPick)="onRoutePointPick($event)"
+      (inspectIncident)="inspectingIncident = $event"
+    />
+
+    <!-- Route planner panel (bottom-right overlay) -->
+    @if (showRoutePlanner) {
+      <app-route-planner
+        [startPoint]="routeStart"
+        [endPoint]="routeEnd"
+        (routeReady)="onRouteReady($event)"
+        (routeCleared)="onRouteCleared()"
+        (journeyEnded)="onJourneyEnded($event)"
+      />
+    }
+  </div>
+
+  <!-- Inspect Incident Modal -->
+  @if (inspectingIncident) {
+    <app-inspect-incident-modal
+      [incident]="inspectingIncident"
+      (close)="inspectingIncident = null"
+      (verificationChanged)="refreshSingleIncident(inspectingIncident!.id)"
+    />
+  }
+
+  <!-- Incident Form Modal -->
+  @if (showIncidentForm) {
+    <app-incident-form
+      [lat]="pendingLat"
+      [lng]="pendingLng"
+      (formSubmit)="onIncidentSubmit($event)"
+      (formCancel)="onIncidentCancel()"
+    />
+  }
+
+  <!-- Route Verification Modal -->
+  @if (showVerificationModal) {
+    <app-route-verification-modal
+      [incidents]="verificationIncidents"
+      (completed)="onVerificationCompleted()"
+    />
+  }
+</div>

@@ -1,0 +1,47 @@
+<nav class="navbar" [class.collapsed]="collapsed()">
+  <!-- Logo / Brand -->
+  <div class="navbar-brand">
+<i class="fa-solid fa-route brand-icon"></i>
+    @if (!collapsed()) {
+      <span class="brand-text">SafeRoad</span>
+    }
+  </div>
+
+  <!-- Navigation Items -->
+  <ul class="nav-list">
+    @for (item of navItems; track item.route) {
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          [title]="item.label"
+        >
+          <i [class]="item.icon + ' nav-icon'"></i>
+          @if (!collapsed()) {
+            <span class="nav-label">{{ item.label }}</span>
+          }
+        </a>
+      </li>
+    }
+  </ul>
+
+  <!-- Spacer -->
+  <div class="nav-spacer"></div>
+
+  <!-- Logout -->
+  <button type="button" class="nav-logout" (click)="logout()" title="Logout">
+    <i class="fas fa-sign-out-alt nav-icon"></i>
+    @if (!collapsed()) {
+      <span class="nav-label">Logout</span>
+    }
+  </button>
+
+  <!-- Collapse Toggle -->
+  <button class="nav-toggle" (click)="toggleCollapse()" [title]="collapsed() ? 'Expand' : 'Collapse'">
+    <span class="toggle-icon" [class.rotated]="collapsed()">«</span>
+    @if (!collapsed()) {
+      <span class="toggle-label">Collapse</span>
+    }
+  </button>
+</nav>

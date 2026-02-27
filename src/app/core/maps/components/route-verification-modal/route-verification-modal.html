@@ -1,0 +1,91 @@
+<div class="modal-backdrop" (click)="$event.stopPropagation()">
+  <div class="modal-card">
+
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="modal-title-row">
+        <span class="modal-emoji">🔍</span>
+        <div>
+          <h3 class="modal-title">Route Incident Review</h3>
+          <p class="modal-subtitle">Help SafeRoad stay accurate by verifying what you saw</p>
+        </div>
+      </div>
+      <div class="modal-counter">
+        {{ verifyIndex() }} <span>/ {{ incidents().length }}</span>
+      </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="progress-track">
+      <div class="progress-fill" [style.width.%]="progressPercent()"></div>
+    </div>
+
+    @if (currentIncident()) {
+      <!-- Incident card -->
+      <div class="incident-card">
+        <div
+          class="incident-icon-wrap"
+          [style.background]="getStyle(currentIncident()!.categoryName).color + '22'"
+          [style.border]="'2px solid ' + getStyle(currentIncident()!.categoryName).color + '55'"
+        >
+          <i
+            class="fas {{ getStyle(currentIncident()!.categoryName).icon }}"
+            [style.color]="getStyle(currentIncident()!.categoryName).color"
+          ></i>
+        </div>
+        <div class="incident-details">
+          <span class="incident-category-badge"
+            [style.background]="getStyle(currentIncident()!.categoryName).color + '22'"
+            [style.color]="getStyle(currentIncident()!.categoryName).color">
+            {{ currentIncident()!.categoryName }}
+          </span>
+          <strong class="incident-title">
+            {{ currentIncident()!.title || currentIncident()!.categoryName }}
+          </strong>
+          <span class="incident-coords">
+            <i class="fas fa-map-pin"></i>
+            {{ currentIncident()!.latitude.toFixed(5) }},
+            {{ currentIncident()!.longitude.toFixed(5) }}
+          </span>
+        </div>
+      </div>
+
+      <p class="verify-question">Did you encounter this incident during your trip?</p>
+
+      <!-- Action buttons -->
+      <div class="action-row">
+        <button
+          class="btn-action btn-verify"
+          [disabled]="loading()"
+          (click)="verify()"
+        >
+          @if (loading()) {
+            <span class="btn-spinner"></span>
+          } @else {
+            <i class="fas fa-check-circle"></i>
+          }
+          <span>Verify</span>
+          <small>I saw it</small>
+        </button>
+
+        <button
+          class="btn-action btn-dispute"
+          [disabled]="loading()"
+          (click)="dispute()"
+        >
+          @if (loading()) {
+            <span class="btn-spinner"></span>
+          } @else {
+            <i class="fas fa-times-circle"></i>
+          }
+          <span>Dispute</span>
+          <small>Didn't see it</small>
+        </button>
+      </div>
+
+      <button class="btn-skip" [disabled]="loading()" (click)="skip()">
+        Skip this incident →
+      </button>
+    }
+  </div>
+</div>

@@ -1,0 +1,291 @@
+/* ── Vertical Navbar ──────────────────────── */
+.navbar {
+  display: flex;
+  flex-direction: column;
+  width: 240px;
+  height: 100vh;
+  background: #1e293b;
+  border-right: 1px solid #334155;
+  padding: 0.75rem 0;
+  transition: width 0.25s ease;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.navbar.collapsed {
+  width: 64px;
+}
+
+/* ── Brand ────────────────────────────────── */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 1rem 1rem;
+  border-bottom: 1px solid #334155;
+  margin-bottom: 0.5rem;
+  min-height: 48px;
+}
+
+.brand-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  color: #3b82f6;
+}
+
+.brand-text {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  white-space: nowrap;
+}
+
+/* ── Nav List ─────────────────────────────── */
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.nav-item {
+  padding: 0 0.5rem;
+  position: relative;
+}
+
+/* Sol kenar border – aktif sayfa */
+.nav-item:has(.nav-link.active)::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  border-radius: 0 3px 3px 0;
+}
+
+.nav-item:nth-child(1):has(.nav-link.active)::before {
+  background: #f59e0b;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.8);
+}
+
+.nav-item:nth-child(2):has(.nav-link.active)::before {
+  background: #10b981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
+}
+
+.nav-item:nth-child(3):has(.nav-link.active)::before {
+  background: #f43f5e;
+  box-shadow: 0 0 8px rgba(244, 63, 94, 0.8);
+}
+
+.nav-item:nth-child(4):has(.nav-link.active)::before {
+  background: #a78bfa;
+  box-shadow: 0 0 8px rgba(167, 139, 250, 0.8);
+}
+
+.nav-item:nth-child(5):has(.nav-link.active)::before {
+  background: #22d3ee;
+  box-shadow: 0 0 8px rgba(34, 211, 238, 0.8);
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.5rem;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.nav-link:hover {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+.nav-link.active {
+  background: rgba(59, 130, 246, 0.15);
+  color: #f1f5f9;
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3);
+}
+
+.nav-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  width: 1.5rem;
+  text-align: center;
+  transition: transform 0.2s, filter 0.2s;
+}
+
+/* ── Per-icon vibrant colors ──────────────── */
+/* Home – amber */
+.nav-item:nth-child(1) .nav-icon {
+  color: #f59e0b;
+  filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.4));
+}
+
+/* Map – emerald */
+.nav-item:nth-child(2) .nav-icon {
+  color: #10b981;
+  filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.4));
+}
+
+/* Incidents – red */
+.nav-item:nth-child(3) .nav-icon {
+  color: #f43f5e;
+  filter: drop-shadow(0 0 4px rgba(244, 63, 94, 0.4));
+}
+
+/* Analytics – violet */
+.nav-item:nth-child(4) .nav-icon {
+  color: #a78bfa;
+  filter: drop-shadow(0 0 4px rgba(167, 139, 250, 0.4));
+}
+
+/* Profile – cyan */
+.nav-item:nth-child(5) .nav-icon {
+  color: #22d3ee;
+  filter: drop-shadow(0 0 4px rgba(34, 211, 238, 0.4));
+}
+
+/* Hover: glow & slight scale-up */
+.nav-link:hover .nav-icon {
+  transform: scale(1.15);
+}
+
+.nav-item:nth-child(1) .nav-link:hover .nav-icon {
+  filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.75));
+}
+
+.nav-item:nth-child(2) .nav-link:hover .nav-icon {
+  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.75));
+}
+
+.nav-item:nth-child(3) .nav-link:hover .nav-icon {
+  filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.75));
+}
+
+.nav-item:nth-child(4) .nav-link:hover .nav-icon {
+  filter: drop-shadow(0 0 8px rgba(167, 139, 250, 0.75));
+}
+
+.nav-item:nth-child(5) .nav-link:hover .nav-icon {
+  filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.75));
+}
+
+/* Active: keep icon color, stronger glow */
+.nav-item:nth-child(1) .nav-link.active .nav-icon {
+  filter: drop-shadow(0 0 10px rgba(245, 158, 11, 1));
+}
+
+.nav-item:nth-child(2) .nav-link.active .nav-icon {
+  filter: drop-shadow(0 0 10px rgba(16, 185, 129, 1));
+}
+
+.nav-item:nth-child(3) .nav-link.active .nav-icon {
+  filter: drop-shadow(0 0 10px rgba(244, 63, 94, 1));
+}
+
+.nav-item:nth-child(4) .nav-link.active .nav-icon {
+  filter: drop-shadow(0 0 10px rgba(167, 139, 250, 1));
+}
+
+.nav-item:nth-child(5) .nav-link.active .nav-icon {
+  filter: drop-shadow(0 0 10px rgba(34, 211, 238, 1));
+}
+
+.nav-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Spacer ───────────────────────────────── */
+.nav-spacer {
+  flex: 1;
+}
+
+/* ── Logout Button ────────────────────────── */
+.nav-logout {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0.5rem 0.25rem;
+  padding: 0.625rem 0.75rem;
+  border: none;
+  border-top: 1px solid #334155;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  width: calc(100% - 1rem);
+  transition: background 0.2s, color 0.2s;
+  padding-top: 0.875rem;
+}
+
+.nav-logout .nav-icon {
+  color: #f43f5e;
+  filter: drop-shadow(0 0 4px rgba(244, 63, 94, 0.4));
+}
+
+.nav-logout:hover {
+  background: rgba(244, 63, 94, 0.1);
+  color: #f43f5e;
+}
+
+.nav-logout:hover .nav-icon {
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.75));
+}
+
+/* ── Toggle Button ────────────────────────── */
+.nav-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.25rem 0.5rem 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #334155;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+  white-space: nowrap;
+}
+
+.nav-toggle:hover {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+.toggle-icon {
+  font-size: 1rem;
+  font-weight: 700;
+  transition: transform 0.25s ease;
+}
+
+.toggle-icon.rotated {
+  transform: rotate(180deg);
+}
+
+.toggle-label {
+  overflow: hidden;
+}

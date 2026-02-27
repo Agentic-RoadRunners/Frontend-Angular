@@ -1,0 +1,125 @@
+<div class="incidents-page">
+  <!-- ── Header ───────────────────────────────────────────── -->
+  <header class="page-header">
+    <div class="header-left">
+      <i class="fas fa-triangle-exclamation header-icon"></i>
+      <h1>Incidents</h1>
+      @if (!isLoading()) {
+        <span class="count-badge">{{ processedIncidents().length }}</span>
+      }
+    </div>
+
+    <div class="header-actions">
+      <!-- Search -->
+      <div class="search-box">
+        <i class="fas fa-magnifying-glass search-icon"></i>
+        <input
+          type="text"
+          placeholder="Search incidents…"
+          [ngModel]="searchQuery()"
+          (ngModelChange)="onSearchChange($event)"
+        />
+      </div>
+
+      <!-- Sort -->
+      <div class="sort-select-wrapper">
+        <i class="fas fa-arrow-down-short-wide sort-icon"></i>
+        <select [ngModel]="activeSortIndex()" (ngModelChange)="onSortChange(+$event)">
+          @for (opt of sortOptions; track opt.label; let i = $index) {
+            <option [value]="i">{{ opt.label }}</option>
+          }
+        </select>
+      </div>
+
+      <button class="btn-refresh" (click)="loadIncidents()" [disabled]="isLoading()">
+        <i class="fas fa-rotate-right" [class.spinning]="isLoading()"></i>
+        Refresh
+      </button>
+    </div>
+  </header>
+
+  <!-- ── Summary Stats ────────────────────────────────────── -->
+  @if (!isLoading() && !hasError()) {
+    <div class="stats-bar">
+      <div class="stat-card">
+        <i class="fas fa-layer-group stat-icon"></i>
+        <span class="stat-value">{{ statusCounts().total }}</span>
+        <span class="stat-label">Total</span>
+      </div>
+      <div class="stat-card stat-pending">
+        <i class="fas fa-clock stat-icon"></i>
+        <span class="stat-value">{{ statusCounts().pending }}</span>
+        <span class="stat-label">Pending</span>
+      </div>
+      <div class="stat-card stat-verified">
+        <i class="fas fa-circle-check stat-icon"></i>
+        <span class="stat-value">{{ statusCounts().verified }}</span>
+        <span class="stat-label">Verified</span>
+      </div>
+      <div class="stat-card stat-resolved">
+        <i class="fas fa-flag-checkered stat-icon"></i>
+        <span class="stat-value">{{ statusCounts().resolved }}</span>
+        <span class="stat-label">Resolved</span>
+      </div>
+      <div class="stat-card stat-rejected">
+        <i class="fas fa-ban stat-icon"></i>
+        <span class="stat-value">{{ statusCounts().rejected }}</span>
+        <span class="stat-label">Rejected</span>
+      </div>
+    </div>
+  }
+
+  <!-- ── Body ─────────────────────────────────────────────── -->
+  <div class="page-body">
+    <!-- Filter Sidebar -->
+    <app-incident-filter
+      [categories]="categories()"
+      [municipalities]="municipalities()"
+      (filtersChange)="onFiltersChange($event)"
+    />
+
+    <!-- Incident List -->
+    <main class="incidents-content">
+      @if (isLoading()) {
+        <div class="state-container">
+          <div class="spinner"></div>
+          <p>Loading incidents…</p>
+        </div>
+      } @else if (hasError()) {
+        <div class="state-container state-error">
+          <i class="fas fa-circle-exclamation"></i>
+          <p>Failed to load incidents. Please try again.</p>
+          <button class="btn-retry" (click)="loadIncidents()">
+            <i class="fas fa-rotate-right"></i> Retry
+          </button>
+        </div>
+      } @else if (processedIncidents().length === 0) {
+        <div class="state-container state-empty">
+          <i class="fas fa-inbox"></i>
+          <p>No incidents match your filters.</p>
+        </div>
+      } @else {
+        <div class="incidents-grid">
+          @for (incident of paginatedIncidents(); track incident.id) {
+            <div (click)="goToIncidentOnMap(incident)" class="cursor-pointer">
+              <app-incident-card [incident]="incident" />
+            </div>
+          }
+        </div>
+
+        <!-- Load More -->
+        @if (hasMore()) {
+          <div class="load-more-wrapper">
+            <button class="btn-load-more" (click)="loadMore()">
+              <i class="fas fa-chevron-down"></i>
+              Load More
+              <span class="load-more-info">
+                Showing {{ paginatedIncidents().length }} of {{ processedIncidents().length }}
+              </span>
+            </button>
+          </div>
+        }
+      }
+    </main>
+  </div>
+</div>

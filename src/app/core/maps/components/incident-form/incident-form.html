@@ -1,0 +1,121 @@
+<div class="incident-form-overlay" (click)="cancel()">
+  <div class="incident-form" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="form-header">
+      <div class="header-left">
+        <div class="header-icon">
+          <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <div>
+          <h2>Report Incident</h2>
+          <span class="form-coords">
+            <i class="fas fa-map-pin"></i>
+            {{ lat().toFixed(5) }}, {{ lng().toFixed(5) }}
+          </span>
+        </div>
+      </div>
+      <button class="btn-close" (click)="cancel()">
+        <i class="fas fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Step 1: Incident Type -->
+    <div class="form-section">
+      <label class="section-label"> <i class="fas fa-tag"></i> Incident Type </label>
+
+      @if (isLoadingCategories) {
+        <div class="loading-categories">
+          <i class="fas fa-spinner fa-spin"></i> Loading categories...
+        </div>
+      } @else {
+        <div class="type-grid">
+          @for (category of categories; track category.id) {
+            <button
+              class="type-card"
+              [class.selected]="selectedCategory?.id === category.id"
+              [style.--card-color]="getCatStyle(category.id).color"
+              (click)="selectCategory(category)"
+            >
+              <span
+                class="type-icon-wrap"
+                [style.background]="getCatStyle(category.id).color + '18'"
+                [style.color]="getCatStyle(category.id).color"
+              >
+                <i [class]="'fas ' + getCatStyle(category.id).icon"></i>
+              </span>
+              <span class="type-label">{{ getCatStyle(category.id).label }}</span>
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Step 2: Title (optional) -->
+    <div class="form-section">
+      <label class="section-label" for="title">
+        <i class="fas fa-heading"></i> Title <span class="optional">(optional)</span>
+      </label>
+      <input
+        id="title"
+        type="text"
+        class="detail-input"
+        placeholder="e.g. Large pothole blocking right lane"
+        [(ngModel)]="title"
+      />
+    </div>
+
+    <!-- Step 3: Description -->
+    <div class="form-section">
+      <label class="section-label" for="description">
+        <i class="fas fa-pen"></i> Description <span class="required">*</span>
+      </label>
+      <textarea
+        id="description"
+        class="description-input"
+        rows="4"
+        placeholder="Describe what happened, when, and how severe it looks…"
+        [(ngModel)]="description"
+      ></textarea>
+    </div>
+
+    <div class="form-section">
+      <!-- Step 5: Photos -->
+      <div class="form-section">
+        <label class="section-label"> <i class="fas fa-camera"></i> Photos (max 5) </label>
+        <div class="photo-area">
+          @for (photo of photoPreviews; track $index) {
+            <div class="photo-thumb">
+              <img [src]="photo" alt="Incident photo" />
+              <button class="photo-remove" (click)="removePhoto($index)">
+                <i class="fas fa-xmark"></i>
+              </button>
+            </div>
+          }
+          @if (photoPreviews.length < 5) {
+            <label class="photo-add">
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                hidden
+                (change)="onFileSelected($event)"
+              />
+              <i class="fas fa-plus fa-lg"></i>
+              <span class="photo-add-text">Add Photo</span>
+            </label>
+          }
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button class="btn-cancel" (click)="cancel()">
+          <i class="fas fa-arrow-left"></i> Cancel
+        </button>
+        <button class="btn-submit" [disabled]="!isValid" (click)="submit()">
+          <i class="fas fa-paper-plane"></i> Submit Incident
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

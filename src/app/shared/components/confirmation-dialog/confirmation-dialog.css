@@ -1,0 +1,179 @@
+/* ── Backdrop ──────────────────────────────── */
+.cd-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: cdFadeIn 0.15s ease;
+}
+
+@keyframes cdFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── Card ─────────────────────────────────── */
+.cd-card {
+  width: 100%;
+  max-width: 420px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 1rem;
+  box-shadow: 0 20px 56px rgba(0, 0, 0, 0.5);
+  padding: 2rem 2rem 1.5rem;
+  text-align: center;
+  animation: cdSlideUp 0.2s ease;
+}
+
+@keyframes cdSlideUp {
+  from {
+    transform: translateY(18px) scale(0.97);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* ── Icon ─────────────────────────────────── */
+.cd-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.cd-icon-circle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+/* ── Title & message ──────────────────────── */
+.cd-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.cd-message {
+  margin: 0 0 1.5rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: #94a3b8;
+}
+
+/* ── Action buttons ───────────────────────── */
+.cd-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.cd-btn {
+  padding: 0.6rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    transform 0.1s;
+}
+
+.cd-btn:active {
+  transform: scale(0.97);
+}
+
+.cd-btn-cancel {
+  background: #334155;
+  color: #cbd5e1;
+}
+.cd-btn-cancel:hover {
+  background: #475569;
+}
+
+/* ── Theme colours ────────────────────────── */
+
+/* Info (blue) */
+.theme-info .cd-icon-circle {
+  background: rgba(56, 104, 217, 0.15);
+  color: #3868d9;
+}
+.theme-info .cd-btn-confirm {
+  background: #3868d9;
+  color: #fff;
+}
+.theme-info .cd-btn-confirm:hover {
+  background: #2d56b8;
+}
+
+/* Success (green) */
+.theme-success .cd-icon-circle {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+}
+.theme-success .cd-btn-confirm {
+  background: #22c55e;
+  color: #fff;
+}
+.theme-success .cd-btn-confirm:hover {
+  background: #16a34a;
+}
+
+/* Warning (amber) */
+.theme-warning .cd-icon-circle {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+.theme-warning .cd-btn-confirm {
+  background: #f59e0b;
+  color: #fff;
+}
+.theme-warning .cd-btn-confirm:hover {
+  background: #d97706;
+}
+
+/* Danger (red) */
+.theme-danger .cd-icon-circle {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+.theme-danger .cd-btn-confirm {
+  background: #ef4444;
+  color: #fff;
+}
+.theme-danger .cd-btn-confirm:hover {
+  background: #dc2626;
+}
+
+/* ── Responsive ───────────────────────────── */
+@media (max-width: 480px) {
+  .cd-card {
+    padding: 1.5rem 1.25rem 1.25rem;
+  }
+  .cd-actions {
+    flex-direction: column-reverse;
+  }
+  .cd-btn {
+    width: 100%;
+  }
+}

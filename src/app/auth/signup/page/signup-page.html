@@ -1,0 +1,60 @@
+<div class="signup-page">
+  <!-- Left Side - Form -->
+  <div class="signup-left">
+    <div class="signup-form-wrapper">
+      <div class="signup-header">
+        <h1>
+          <a routerLink="/home" class="brand">
+            <i class="fa-solid fa-route brand-icon"></i>
+            <div>SafeRoads</div>
+          </a>
+        </h1>
+        <p>Create a new account</p>
+      </div>
+
+      @if (error) {
+        <div class="error-banner">
+          <span>⚠️</span>
+          <span>{{ error }}</span>
+        </div>
+      }
+
+      @if (success) {
+        <div class="success-banner">
+          <span>✅</span>
+          <span>{{ success }}</span>
+        </div>
+      }
+
+      @if (isLoading()) {
+        <div class="loading-overlay">
+          <div class="spinner"></div>
+          <span>Creating account...</span>
+        </div>
+      }
+
+      <app-signup-form (submitSignup)="onSignup($event)" />
+
+      <div class="signup-footer">
+        <span>Already have an account?</span>
+        <a routerLink="/login">Sign in</a>
+      </div>
+    </div>
+
+    <div class="auth-footer">
+      <span>Privacy</span>
+      <span>Terms & Conditions</span>
+      <span>Support</span>
+      <span>Contact</span>
+      <p>© 2025 SafeRoads. All rights reserved.</p>
+    </div>
+  </div>
+
+  <!-- Right Side - Image -->
+  <div class="signup-right">
+    <div class="image-overlay">
+      <h2>Join SafeRoads Today</h2>
+      <p>Be part of the community making roads safer.</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+@if (state().open) {
+  <div class="cd-backdrop" (click)="onBackdropClick($event)">
+    <div class="cd-card" [class]="themeClass()">
+      <!-- Icon -->
+      <div class="cd-icon-wrapper">
+        <div class="cd-icon-circle">
+          <i class="fas" [class]="state().icon"></i>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <h2 class="cd-title">{{ state().title }}</h2>
+      <p class="cd-message">{{ state().message }}</p>
+
+      <!-- Actions -->
+      <div class="cd-actions">
+        @if (state().type === 'confirm') {
+          <button class="cd-btn cd-btn-cancel" (click)="onCancel()">
+            {{ state().cancelText }}
+          </button>
+        }
+        <button class="cd-btn cd-btn-confirm" (click)="onConfirm()">
+          {{ state().confirmText }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,73 @@
+<aside class="filter-panel">
+
+  <div class="filter-header">
+    <span class="filter-title">
+      <i class="fas fa-filter"></i> Filters
+    </span>
+    @if (hasActiveFilters) {
+      <button class="btn-clear" (click)="clear()">
+        <i class="fas fa-times-circle"></i> Clear all
+      </button>
+    }
+  </div>
+
+  <!-- Status -->
+  <section class="filter-section">
+    <span class="section-label"><i class="fas fa-signal"></i> Status</span>
+    <div class="status-chips">
+      @for (s of statuses; track s.id) {
+        <button
+          class="chip"
+          [class.active]="selectedStatus === s.id"
+          [attr.data-status]="s.id"
+          (click)="onStatusClick(s.id)">
+          {{ s.name }}
+        </button>
+      }
+    </div>
+  </section>
+
+  <!-- Date Range -->
+  <section class="filter-section">
+    <span class="section-label"><i class="fas fa-calendar-alt"></i> Date Range</span>
+    <div class="date-range">
+      <div class="date-field">
+        <label><i class="fas fa-arrow-right"></i> From</label>
+        <input
+          type="date"
+          [(ngModel)]="dateFrom"
+          (ngModelChange)="onChange()" />
+      </div>
+      <div class="date-field">
+        <label><i class="fas fa-arrow-left"></i> To</label>
+        <input
+          type="date"
+          [(ngModel)]="dateTo"
+          (ngModelChange)="onChange()" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Category -->
+  <section class="filter-section">
+    <span class="section-label"><i class="fas fa-tags"></i> Category</span>
+    <select [(ngModel)]="categoryId" (ngModelChange)="onChange()">
+      <option value="">All Categories</option>
+      @for (cat of categories(); track cat.id) {
+        <option [value]="cat.id">{{ cat.name }}</option>
+      }
+    </select>
+  </section>
+
+  <!-- Municipality -->
+  <section class="filter-section">
+    <span class="section-label"><i class="fas fa-city"></i> Municipality</span>
+    <select [(ngModel)]="municipalityId" (ngModelChange)="onChange()">
+      <option value="">All Municipalities</option>
+      @for (mun of municipalities(); track mun.id) {
+        <option [value]="mun.id">{{ mun.name }}</option>
+      }
+    </select>
+  </section>
+
+</aside>

@@ -1,0 +1,54 @@
+<div class="login-page">
+  <!-- Left Side - Form -->
+  <div class="login-left">
+    <div class="login-form-wrapper">
+      <div class="login-header">
+        <h1>
+          <a routerLink="/home" class="brand">
+            <i class="fa-solid fa-route brand-icon"></i>
+            <div>SafeRoads</div>
+          </a>
+        </h1>
+        <p>Sign in to your account</p>
+      </div>
+
+      @if (error) {
+        <div class="error-banner">
+          <span>⚠️</span>
+          <span>{{ error }}</span>
+        </div>
+      }
+
+      @if (isLoading()) {
+        <div class="loading-overlay">
+          <div class="spinner"></div>
+          <span>Signing in...</span>
+        </div>
+      }
+
+      <app-login-form (submitLogin)="onLogin($event)" />
+
+      <div class="login-footer">
+        <a href="#">Forgot password</a>
+        <span class="divider">•</span>
+        <a routerLink="/signup">Create account</a>
+      </div>
+    </div>
+
+    <div class="auth-footer">
+      <span>Privacy</span>
+      <span>Terms & Conditions</span>
+      <span>Support</span>
+      <span>Contact</span>
+      <p>© 2025 SafeRoads. All rights reserved.</p>
+    </div>
+  </div>
+
+  <!-- Right Side - Image -->
+  <div class="login-right">
+    <div class="image-overlay">
+      <h2>Welcome to SafeRoads</h2>
+      <p>Making roads safer, together.</p>
+    </div>
+  </div>
+</div>
