@@ -6,10 +6,11 @@ import { ProfileHeader } from '../components/profile-header/profile-header';
 import { ProfileStats } from '../components/profile-stats/profile-stats';
 import { ProfileEditForm } from '../components/profile-edit-form/profile-edit-form';
 import { ChangePasswordForm } from '../components/change-password-form/change-password-form';
+import { WatchedAreasList } from '../components/watched-areas-list/watched-areas-list';
 
 @Component({
   selector: 'app-profile-page',
-  imports: [ProfileHeader, ProfileStats, ProfileEditForm, ChangePasswordForm],
+  imports: [ProfileHeader, ProfileStats, ProfileEditForm, ChangePasswordForm, WatchedAreasList],
   templateUrl: './profile-page.html',
   styleUrl: './profile-page.css',
 })

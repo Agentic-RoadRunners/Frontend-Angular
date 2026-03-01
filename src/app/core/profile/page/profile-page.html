@@ -14,59 +14,57 @@
 
   <!-- ── Toast Messages ─────────────────────────────────── -->
   @if (successMessage()) {
-    <div class="toast toast-success">
-      <i class="fas fa-circle-check"></i>
-      {{ successMessage() }}
-    </div>
+  <div class="toast toast-success">
+    <i class="fas fa-circle-check"></i>
+    {{ successMessage() }}
+  </div>
   }
   @if (errorMessage()) {
-    <div class="toast toast-error">
-      <i class="fas fa-circle-xmark"></i>
-      {{ errorMessage() }}
-    </div>
+  <div class="toast toast-error">
+    <i class="fas fa-circle-xmark"></i>
+    {{ errorMessage() }}
+  </div>
   }
 
   <!-- ── Loading / Error / Content ──────────────────────── -->
   @if (isLoading()) {
-    <div class="state-container">
-      <div class="spinner"></div>
-      <p>Loading profile…</p>
-    </div>
+  <div class="state-container">
+    <div class="spinner"></div>
+    <p>Loading profile…</p>
+  </div>
   } @else if (hasError()) {
-    <div class="state-container state-error">
-      <i class="fas fa-circle-exclamation"></i>
-      <p>Failed to load profile.</p>
-      <button class="btn-retry" (click)="loadData()">
-        <i class="fas fa-rotate-right"></i> Retry
-      </button>
-    </div>
+  <div class="state-container state-error">
+    <i class="fas fa-circle-exclamation"></i>
+    <p>Failed to load profile.</p>
+    <button class="btn-retry" (click)="loadData()">
+      <i class="fas fa-rotate-right"></i> Retry
+    </button>
+  </div>
   } @else {
-    <div class="profile-content">
+  <div class="profile-content">
 
-      <!-- Profile Header -->
+    <!-- Profile Header -->
+    @if (profile(); as p) {
+    <app-profile-header [profile]="p" />
+    }
+
+    <!-- Stats -->
+    @if (stats(); as s) {
+    <app-profile-stats [stats]="s" />
+    }
+
+    <!-- Watched Areas -->
+    <app-watched-areas-list />
+
+    <!-- Forms Grid -->
+    <div class="forms-grid">
       @if (profile(); as p) {
-        <app-profile-header [profile]="p" />
+      <app-profile-edit-form [profile]="p" [saving]="savingProfile()" (save)="onProfileSave($event)" />
       }
 
-      <!-- Stats -->
-      @if (stats(); as s) {
-        <app-profile-stats [stats]="s" />
-      }
-
-      <!-- Forms Grid -->
-      <div class="forms-grid">
-        @if (profile(); as p) {
-          <app-profile-edit-form
-            [profile]="p"
-            [saving]="savingProfile()"
-            (save)="onProfileSave($event)" />
-        }
-
-        <app-change-password-form
-          [saving]="savingPassword()"
-          (save)="onPasswordChange($event)" />
-      </div>
-
+      <app-change-password-form [saving]="savingPassword()" (save)="onPasswordChange($event)" />
     </div>
+
+  </div>
   }
 </div>
