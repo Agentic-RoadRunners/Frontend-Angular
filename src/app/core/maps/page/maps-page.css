@@ -57,6 +57,30 @@
   border-color: #64748b;
 }
 
+/* ── Watched Areas Button ────────────────── */
+.btn-watched {
+  padding: 0.5rem 1rem;
+  border: 1px solid #475569;
+  border-radius: 0.5rem;
+  background: #334155;
+  color: #f1f5f9;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.btn-watched:hover {
+  background: #475569;
+  border-color: #64748b;
+}
+
+.btn-watched.active {
+  background: #6366f1;
+  border-color: #818cf8;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+}
+
 /* ── Plan Route Button ───────────────────── */
 .btn-route {
   padding: 0.5rem 1rem;
@@ -85,11 +109,13 @@
 
 /* ── Route Pick Banners ──────────────────── */
 .route-banner {
-  background: #14532d; /* green tint for start */
+  background: #14532d;
+  /* green tint for start */
 }
 
 .route-banner-end {
-  background: #450a0a; /* red tint for destination */
+  background: #450a0a;
+  /* red tint for destination */
 }
 
 /* ── Add Incident Button ─────────────────── */
@@ -137,10 +163,12 @@
 }
 
 @keyframes pulse-banner {
+
   0%,
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.7;
   }

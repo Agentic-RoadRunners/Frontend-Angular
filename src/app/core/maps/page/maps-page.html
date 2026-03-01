@@ -3,93 +3,79 @@
   <header class="toolbar">
     <div class="toolbar-left"></div>
     <div class="toolbar-actions">
-      <button
-        class="btn-route"
-        [class.active]="routeButtonActive"
-        (click)="onPlanRouteClick()"
-      >
+      <button class="btn-route" [class.active]="routeButtonActive" (click)="onPlanRouteClick()">
         {{ routeButtonLabel }}
       </button>
-      <button
-        class="btn-add-incident"
-        [class.active]="isSelectingLocation"
-        (click)="toggleSelectionMode()"
-      >
+      <button class="btn-add-incident" [class.active]="isSelectingLocation" (click)="toggleSelectionMode()">
         {{ isSelectingLocation ? '✕ Cancel' : '📍 Add Incident' }}
       </button>
       <button class="btn-heatmap" (click)="toggleHeatmap()">
         {{ heatmapVisible ? '🔥 Hide Heatmap' : '🔥 Show Heatmap' }}
       </button>
+      <button class="btn-watched" [class.active]="showWatchedAreas" (click)="showWatchedAreas = !showWatchedAreas">
+        {{ showWatchedAreas ? '✕ Close Areas' : '👁️ Watched Areas' }}
+      </button>
     </div>
   </header>
 
   <!-- Incident selection banner -->
-  @if (isSelectingLocation) {
-    <div class="selection-banner">🖱️ Click on the map to place an incident marker</div>
+  @if (isSelectingLocation && !isPickingWatchedArea) {
+  <div class="selection-banner">🖱️ Click on the map to place an incident marker</div>
+  }
+
+  <!-- Watched area pick banner -->
+  @if (isPickingWatchedArea) {
+  <div class="selection-banner route-banner">
+    👁️ Click on the map to set the watched area center
+  </div>
   }
 
   <!-- Route pick banners -->
   @if (routePickMode === 'start') {
-    <div class="selection-banner route-banner">
-      🟢 Click on the map to set your starting point
-    </div>
+  <div class="selection-banner route-banner">
+    🟢 Click on the map to set your starting point
+  </div>
   }
   @if (routePickMode === 'end') {
-    <div class="selection-banner route-banner route-banner-end">
-      🔴 Now click on the map to set your     destination
-    </div>
+  <div class="selection-banner route-banner route-banner-end">
+    🔴 Now click on the map to set your destination
+  </div>
   }
 
   <!-- Map -->
   <div class="map-wrapper" [class.selecting]="isSelectingLocation || routePickMode !== 'none'">
-    <app-map-view
-      [centerLat]="centerLat"
-      [centerLng]="centerLng"
-      [heatPoints]="heatPoints"
-      [selectionMode]="isSelectingLocation"
-      [incidents]="incidents"
-      [routePickMode]="routePickMode"
-      (mapClick)="onMapClick($event)"
-      (routePointPick)="onRoutePointPick($event)"
-      (inspectIncident)="inspectingIncident = $event"
-    />
+    <app-map-view [centerLat]="centerLat" [centerLng]="centerLng" [heatPoints]="heatPoints"
+      [selectionMode]="isSelectingLocation" [incidents]="incidents" [routePickMode]="routePickMode"
+      (mapClick)="onMapClick($event)" (routePointPick)="onRoutePointPick($event)"
+      (inspectIncident)="inspectingIncident = $event" />
+
+    <!-- Watched Areas Panel -->
+    @if (showWatchedAreas) {
+    <app-watched-areas-panel #watchedAreasPanel (areasChanged)="watchedAreas = $event"
+      (pickRequested)="onWatchedAreaPickRequested()" (pickCancelled)="onWatchedAreaPickCancelled()" />
+    }
 
     <!-- Route planner panel (bottom-right overlay) -->
     @if (showRoutePlanner) {
-      <app-route-planner
-        [startPoint]="routeStart"
-        [endPoint]="routeEnd"
-        (routeReady)="onRouteReady($event)"
-        (routeCleared)="onRouteCleared()"
-        (journeyEnded)="onJourneyEnded($event)"
-      />
+    <app-route-planner [startPoint]="routeStart" [endPoint]="routeEnd" (routeReady)="onRouteReady($event)"
+      (routeCleared)="onRouteCleared()" (journeyEnded)="onJourneyEnded($event)" />
     }
   </div>
 
   <!-- Inspect Incident Modal -->
   @if (inspectingIncident) {
-    <app-inspect-incident-modal
-      [incident]="inspectingIncident"
-      (close)="inspectingIncident = null"
-      (verificationChanged)="refreshSingleIncident(inspectingIncident!.id)"
-    />
+  <app-inspect-incident-modal [incident]="inspectingIncident" (close)="inspectingIncident = null"
+    (verificationChanged)="refreshSingleIncident(inspectingIncident!.id)" />
   }
 
   <!-- Incident Form Modal -->
   @if (showIncidentForm) {
-    <app-incident-form
-      [lat]="pendingLat"
-      [lng]="pendingLng"
-      (formSubmit)="onIncidentSubmit($event)"
-      (formCancel)="onIncidentCancel()"
-    />
+  <app-incident-form [lat]="pendingLat" [lng]="pendingLng" (formSubmit)="onIncidentSubmit($event)"
+    (formCancel)="onIncidentCancel()" />
   }
 
   <!-- Route Verification Modal -->
   @if (showVerificationModal) {
-    <app-route-verification-modal
-      [incidents]="verificationIncidents"
-      (completed)="onVerificationCompleted()"
-    />
+  <app-route-verification-modal [incidents]="verificationIncidents" (completed)="onVerificationCompleted()" />
   }
 </div>
