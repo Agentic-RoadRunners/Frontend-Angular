@@ -1,12 +1,15 @@
 import { Component, OnInit, viewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { MapView, MapMarker, HeatPoint, MapClickEvent } from '../components/map-view/map-view';
 import { IncidentForm, IncidentFormData } from '../components/incident-form/incident-form';
 import { InspectIncidentModal } from '../components/inspect-incident-modal/inspect-incident-modal';
 import { RoutePlanner, RouteReadyEvent, JourneyEndedEvent } from '../components/route-planner/route-planner';
 import { RouteVerificationModal } from '../components/route-verification-modal/route-verification-modal';
+import { WatchedAreasPanel } from '../components/watched-areas-panel/watched-areas-panel';
 import { IncidentsService } from '../../../shared/services/incidents.service';
 import { IncidentResponse } from '../../../models/incident.model';
+import { WatchedAreaResponse } from '../../../models/watched-area.model';
 import { RouteIncidentDto } from '../../../models/journey.model';
 
 const ANTALYA_LAT = 36.8969;
@@ -14,7 +17,7 @@ const ANTALYA_LNG = 30.7133;
 
 @Component({
   selector: 'app-maps-page',
-  imports: [MapView, IncidentForm, InspectIncidentModal, RoutePlanner, RouteVerificationModal],
+  imports: [FormsModule, MapView, IncidentForm, InspectIncidentModal, RoutePlanner, RouteVerificationModal, WatchedAreasPanel],
   templateUrl: './maps-page.html',
   styleUrl: './maps-page.css',
 })
@@ -23,7 +26,7 @@ export class MapsPage implements OnInit {
 
   readonly centerLat = ANTALYA_LAT;
   readonly centerLng = ANTALYA_LNG;
-  readonly heatPoints: HeatPoint[] = [];
+  heatPoints: HeatPoint[] = [];
 
   incidents: IncidentResponse[] = [];
   markers: MapMarker[] = [];
@@ -46,6 +49,12 @@ export class MapsPage implements OnInit {
   showVerificationModal = false;
   verificationIncidents: RouteIncidentDto[] = [];
 
+  // ── Watched areas state ───────────────────────────
+  showWatchedAreas = false;
+  watchedAreas: WatchedAreaResponse[] = [];
+  isPickingWatchedArea = false;
+  private watchedAreasPanel = viewChild<WatchedAreasPanel>('watchedAreasPanel');
+
   // ── Query params (fly-to) ─────────────────────────
   private targetLat: number | null = null;
   private targetLng: number | null = null;
@@ -54,7 +63,7 @@ export class MapsPage implements OnInit {
   constructor(
     private incidentService: IncidentsService,
     private route: ActivatedRoute,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
@@ -77,6 +86,14 @@ export class MapsPage implements OnInit {
           lng: inc.longitude,
           popupText: inc.title ?? inc.categoryName,
         }));
+
+        // Build heat points from incidents so the heatmap layer has data
+        this.heatPoints = this.incidents.map((inc) => ({
+          lat: inc.latitude,
+          lng: inc.longitude,
+          intensity: 0.6,
+        }));
+
         console.log('✅ Incidents loaded:', this.incidents.length);
         this.flyToTargetIfNeeded();
       },
@@ -144,10 +161,27 @@ export class MapsPage implements OnInit {
   }
 
   onMapClick(event: MapClickEvent): void {
+    // If we're picking a watched area center, forward to the panel
+    if (this.isPickingWatchedArea) {
+      this.watchedAreasPanel()?.submitArea(event.lat, event.lng);
+      this.isPickingWatchedArea = false;
+      return;
+    }
     this.pendingLat = event.lat;
     this.pendingLng = event.lng;
     this.isSelectingLocation = false;
     this.showIncidentForm = true;
+  }
+
+  onWatchedAreaPickRequested(): void {
+    this.isPickingWatchedArea = true;
+    this.isSelectingLocation = true;
+    this.showIncidentForm = false;
+  }
+
+  onWatchedAreaPickCancelled(): void {
+    this.isPickingWatchedArea = false;
+    this.isSelectingLocation = false;
   }
 
   /** Map click for route point picking — auto-advances through start → end → open panel */

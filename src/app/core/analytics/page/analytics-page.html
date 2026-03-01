@@ -1,0 +1,40 @@
+<div class="analytics-page">
+    <!-- Top Bar -->
+    <header class="page-top-bar">
+        <div class="bar-left">
+            <i class="fas fa-chart-bar bar-icon"></i>
+            <h1>Analytics</h1>
+        </div>
+        <button class="btn-refresh" (click)="loadData()" [disabled]="isLoading()">
+            <i class="fas fa-rotate-right" [class.spinning]="isLoading()"></i>
+            Refresh
+        </button>
+    </header>
+
+    @if (isLoading()) {
+    <div class="state-container">
+        <div class="spinner"></div>
+        <p>Loading analytics…</p>
+    </div>
+    } @else if (hasError()) {
+    <div class="state-container state-error">
+        <i class="fas fa-circle-exclamation"></i>
+        <p>Failed to load analytics data.</p>
+        <button class="btn-retry" (click)="loadData()">
+            <i class="fas fa-rotate-right"></i> Retry
+        </button>
+    </div>
+    } @else {
+    <div class="dashboard-content">
+        @if (overview(); as o) {
+        <app-overview-cards [totalIncidents]="o.totalIncidents" [totalUsers]="o.totalUsers"
+            [resolvedCount]="o.resolvedIncidents" [municipalityCount]="o.incidentsLast30Days" />
+        }
+
+        <div class="charts-grid">
+            <app-category-chart [categories]="categories()" />
+            <app-trend-chart [trends]="trends()" />
+        </div>
+    </div>
+    }
+</div>

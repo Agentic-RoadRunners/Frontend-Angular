@@ -1,0 +1,131 @@
+.chart-container {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.chart-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+}
+
+.chart-summary {
+    display: flex;
+    gap: 12px;
+}
+
+.summary-badge {
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.summary-badge.total {
+    background: #fff7ed;
+    color: #ea580c;
+}
+
+.summary-badge.resolved {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.no-data {
+    text-align: center;
+    color: #94a3b8;
+    padding: 40px 0;
+}
+
+.bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    height: 200px;
+    padding: 0 4px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.column-bars {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    gap: 2px;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.column-bar {
+    width: 40%;
+    max-width: 14px;
+    min-height: 2px;
+    border-radius: 4px 4px 0 0;
+    transition: height 0.3s ease;
+}
+
+.column-bar.total {
+    background: #f97316;
+}
+
+.column-bar.resolved {
+    background: #22c55e;
+}
+
+.column-label {
+    font-size: 0.65rem;
+    color: #94a3b8;
+    margin-top: 6px;
+    white-space: nowrap;
+}
+
+.legend {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.dot.total {
+    background: #f97316;
+}
+
+.dot.resolved {
+    background: #22c55e;
+}

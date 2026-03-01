@@ -1,0 +1,105 @@
+<div class="municipality-page">
+    <!-- Top Bar -->
+    <header class="page-top-bar">
+        <div class="bar-left">
+            <i class="fas fa-building bar-icon"></i>
+            <h1>Municipality Panel</h1>
+        </div>
+        <button class="btn-refresh" (click)="loadIncidents()" [disabled]="isLoading()">
+            <i class="fas fa-rotate-right" [class.spinning]="isLoading()"></i>
+            Refresh
+        </button>
+    </header>
+
+    <!-- Toast -->
+    @if (toastMessage()) {
+    <div class="toast" [class.toast-success]="toastType() === 'success'" [class.toast-error]="toastType() === 'error'">
+        <i [class]="toastType() === 'success' ? 'fas fa-circle-check' : 'fas fa-circle-xmark'"></i>
+        {{ toastMessage() }}
+    </div>
+    }
+
+    <div class="page-content">
+        <!-- Filters -->
+        <div class="filters-row">
+            <select class="status-filter" [value]="statusFilter()" (change)="onFilterStatus($any($event.target).value)">
+                <option value="">All Statuses</option>
+                @for (s of statuses; track s) {
+                <option [value]="s">{{ s }}</option>
+                }
+            </select>
+        </div>
+
+        @if (isLoading()) {
+        <div class="loading-row">
+            <div class="spinner"></div>
+        </div>
+        } @else if (hasError()) {
+        <div class="state-error">
+            <i class="fas fa-circle-exclamation"></i>
+            <p>Failed to load incidents.</p>
+            <button class="btn-retry" (click)="loadIncidents()">
+                <i class="fas fa-rotate-right"></i> Retry
+            </button>
+        </div>
+        } @else {
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Verifications</th>
+                        <th>Date</th>
+                        <th>Change Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (inc of incidents(); track inc.id) {
+                    <tr>
+                        <td>{{ inc.title || '(no title)' }}</td>
+                        <td>{{ inc.categoryName }}</td>
+                        <td>
+                            <span class="badge" [class.badge-pending]="inc.status === 'Pending'"
+                                [class.badge-verified]="inc.status === 'Verified'"
+                                [class.badge-resolved]="inc.status === 'Resolved'"
+                                [class.badge-disputed]="inc.status === 'Disputed'">{{ inc.status }}</span>
+                        </td>
+                        <td>
+                            <span class="v-positive">+{{ inc.positiveVerifications }}</span>
+                            /
+                            <span class="v-negative">-{{ inc.negativeVerifications }}</span>
+                        </td>
+                        <td>{{ inc.createdAt | date:'shortDate' }}</td>
+                        <td>
+                            <select class="status-select" [value]="inc.status"
+                                (change)="changeStatus(inc, $any($event.target).value)">
+                                @for (s of statuses; track s) {
+                                <option [value]="s">{{ s }}</option>
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                    } @empty {
+                    <tr>
+                        <td colspan="6" class="empty-row">No incidents in your municipality</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="btn-page" [disabled]="page() <= 1" (click)="prevPage()">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <span class="page-info">Page {{ page() }} / {{ totalPages() }}</span>
+            <button class="btn-page" [disabled]="page() >= totalPages()" (click)="nextPage()">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+        }
+    </div>
+</div>

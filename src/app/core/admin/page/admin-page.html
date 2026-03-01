@@ -1,0 +1,232 @@
+<div class="admin-page">
+    <!-- Top Bar -->
+    <header class="page-top-bar">
+        <div class="bar-left">
+            <i class="fas fa-shield-alt bar-icon"></i>
+            <h1>Admin Panel</h1>
+        </div>
+    </header>
+
+    <!-- Toast -->
+    @if (toastMessage()) {
+    <div class="toast" [class.toast-success]="toastType() === 'success'" [class.toast-error]="toastType() === 'error'">
+        <i [class]="toastType() === 'success' ? 'fas fa-circle-check' : 'fas fa-circle-xmark'"></i>
+        {{ toastMessage() }}
+    </div>
+    }
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab-btn" [class.active]="activeTab() === 'users'" (click)="switchTab('users')">
+            <i class="fas fa-users"></i> Users
+        </button>
+        <button class="tab-btn" [class.active]="activeTab() === 'incidents'" (click)="switchTab('incidents')">
+            <i class="fas fa-exclamation-triangle"></i> Incidents
+        </button>
+    </div>
+
+    <!-- Users Tab -->
+    @if (activeTab() === 'users') {
+    <div class="tab-content">
+        <!-- Search & Filter -->
+        <div class="filters-row">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search users…" [value]="userSearch()"
+                    (input)="onSearchUsers($any($event.target).value)" />
+            </div>
+            <select class="role-filter" [value]="userRoleFilter()" (change)="onFilterRole($any($event.target).value)">
+                <option value="">All Roles</option>
+                <option value="User">User</option>
+                <option value="Moderator">Moderator</option>
+                <option value="Admin">Admin</option>
+                <option value="Municipality">Municipality</option>
+            </select>
+        </div>
+
+        @if (usersLoading()) {
+        <div class="loading-row">
+            <div class="spinner"></div>
+        </div>
+        } @else {
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Roles</th>
+                        <th>Status</th>
+                        <th>Trust</th>
+                        <th>Incidents</th>
+                        <th>Joined</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (user of users(); track user.id) {
+                    <tr>
+                        <td class="cell-name">
+                            @if (user.avatarUrl) {
+                            <img [src]="user.avatarUrl" class="avatar" alt="" />
+                            } @else {
+                            <span class="avatar-placeholder"><i class="fas fa-user"></i></span>
+                            }
+                            {{ user.fullName || '—' }}
+                        </td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            @for (role of user.roles; track role) {
+                            <span class="badge badge-role">{{ role }}</span>
+                            }
+                        </td>
+                        <td>
+                            <span class="badge" [class.badge-active]="user.status === 'Active'"
+                                [class.badge-banned]="user.status === 'Banned'">
+                                {{ user.status }}
+                            </span>
+                        </td>
+                        <td>{{ user.trustScore }}</td>
+                        <td>{{ user.totalIncidents }}</td>
+                        <td>{{ user.createdAt | date:'shortDate' }}</td>
+                        <td class="cell-actions">
+                            <button class="btn-icon" title="Edit" (click)="openEditUser(user)"><i
+                                    class="fas fa-pen"></i></button>
+                            @if (user.status !== 'Banned') {
+                            <button class="btn-icon btn-danger" title="Ban" (click)="banUser(user.id)"><i
+                                    class="fas fa-ban"></i></button>
+                            } @else {
+                            <button class="btn-icon btn-success" title="Unban" (click)="unbanUser(user.id)"><i
+                                    class="fas fa-unlock"></i></button>
+                            }
+                        </td>
+                    </tr>
+                    } @empty {
+                    <tr>
+                        <td colspan="8" class="empty-row">No users found</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="btn-page" [disabled]="userPage() <= 1" (click)="prevUserPage()">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <span class="page-info">Page {{ userPage() }} / {{ userTotalPages() }}</span>
+            <button class="btn-page" [disabled]="userPage() >= userTotalPages()" (click)="nextUserPage()">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+        }
+    </div>
+    }
+
+    <!-- Incidents Tab -->
+    @if (activeTab() === 'incidents') {
+    <div class="tab-content">
+        @if (incidentsLoading()) {
+        <div class="loading-row">
+            <div class="spinner"></div>
+        </div>
+        } @else {
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Reporter</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (inc of incidents(); track inc.id) {
+                    <tr>
+                        <td>{{ inc.title || '(no title)' }}</td>
+                        <td>{{ inc.categoryName }}</td>
+                        <td>
+                            <span class="badge" [class.badge-pending]="inc.status === 'Pending'"
+                                [class.badge-verified]="inc.status === 'Verified'"
+                                [class.badge-resolved]="inc.status === 'Resolved'"
+                                [class.badge-disputed]="inc.status === 'Disputed'">{{ inc.status }}</span>
+                        </td>
+                        <td>{{ inc.reporterName || '—' }}</td>
+                        <td>{{ inc.createdAt | date:'shortDate' }}</td>
+                        <td class="cell-actions">
+                            <button class="btn-icon" title="Edit" (click)="openEditIncident(inc)"><i
+                                    class="fas fa-pen"></i></button>
+                            <button class="btn-icon btn-danger" title="Delete" (click)="deleteIncident(inc.id)"><i
+                                    class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    } @empty {
+                    <tr>
+                        <td colspan="6" class="empty-row">No incidents found</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <button class="btn-page" [disabled]="incidentPage() <= 1" (click)="prevIncidentPage()">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <span class="page-info">Page {{ incidentPage() }} / {{ incidentTotalPages() }}</span>
+            <button class="btn-page" [disabled]="incidentPage() >= incidentTotalPages()" (click)="nextIncidentPage()">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+        }
+    </div>
+    }
+
+    <!-- Edit User Modal -->
+    @if (editingUser(); as eu) {
+    <div class="modal-overlay" (click)="editingUser.set(null)">
+        <div class="modal-card" (click)="$event.stopPropagation()">
+            <h2>Edit User</h2>
+            <label class="form-label">Full Name
+                <input #nameInput type="text" class="form-input" [value]="eu.fullName || ''" />
+            </label>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" (click)="editingUser.set(null)">Cancel</button>
+                <button class="btn btn-primary" (click)="saveUser(eu, nameInput.value)">Save</button>
+            </div>
+        </div>
+    </div>
+    }
+
+    <!-- Edit Incident Modal -->
+    @if (editingIncident(); as ei) {
+    <div class="modal-overlay" (click)="editingIncident.set(null)">
+        <div class="modal-card" (click)="$event.stopPropagation()">
+            <h2>Edit Incident</h2>
+            <label class="form-label">Title
+                <input #titleInput type="text" class="form-input" [value]="ei.title || ''" />
+            </label>
+            <label class="form-label">Description
+                <textarea #descInput class="form-input form-textarea">{{ ei.description || '' }}</textarea>
+            </label>
+            <label class="form-label">Status
+                <select #statusInput class="form-input" [value]="ei.status">
+                    <option value="Pending">Pending</option>
+                    <option value="Verified">Verified</option>
+                    <option value="Disputed">Disputed</option>
+                    <option value="Resolved">Resolved</option>
+                </select>
+            </label>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" (click)="editingIncident.set(null)">Cancel</button>
+                <button class="btn btn-primary"
+                    (click)="saveIncident(ei, { title: titleInput.value, description: descInput.value, status: statusInput.value })">Save</button>
+            </div>
+        </div>
+    </div>
+    }
+</div>

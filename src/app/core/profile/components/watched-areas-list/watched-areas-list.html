@@ -1,0 +1,37 @@
+<div class="watched-areas">
+    <h3 class="section-title"><i class="fas fa-eye"></i> Watched Areas</h3>
+
+    @if (isLoading()) {
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    } @else {
+    <div class="areas-grid">
+        @for (area of areas(); track area.id) {
+        <div class="area-card">
+            <div class="area-card-body">
+                <span class="area-name">{{ area.label || 'Unnamed Area' }}</span>
+                <span class="area-detail">
+                    <i class="fas fa-map-marker-alt"></i>
+                    {{ area.latitude.toFixed(4) }}, {{ area.longitude.toFixed(4) }}
+                </span>
+                <span class="area-detail">
+                    <i class="fas fa-circle-dot"></i>
+                    {{ area.radiusInMeters ?? 500 }}m radius
+                </span>
+            </div>
+            <div class="area-card-actions">
+                <button class="btn-sm btn-view" (click)="viewOnMap(area)" title="View on Map">
+                    <i class="fas fa-map"></i> View
+                </button>
+                <button class="btn-sm btn-delete" (click)="deleteArea(area.id)" title="Delete">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+        } @empty {
+        <p class="empty-msg">You haven't added any watched areas yet. Use the map to start watching areas.</p>
+        }
+    </div>
+    }
+</div>

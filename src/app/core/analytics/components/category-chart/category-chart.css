@@ -1,0 +1,73 @@
+.chart-container {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid #334155;
+}
+
+.chart-title {
+    color: #f1f5f9;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 1.25rem 0;
+}
+
+.no-data {
+    color: #64748b;
+    text-align: center;
+    padding: 2rem;
+}
+
+.bars {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.bar-label {
+    color: #cbd5e1;
+    font-size: 0.8rem;
+    min-width: 120px;
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bar-track {
+    flex: 1;
+    height: 28px;
+    background: #0f172a;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6366f1 0%, #a78bfa 100%);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 8px;
+    min-width: 2px;
+    transition: width 0.5s ease;
+}
+
+.bar-value {
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.bar-pct {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    min-width: 40px;
+}

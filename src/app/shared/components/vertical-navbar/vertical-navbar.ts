@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../auth/auth.service';
 
@@ -20,13 +20,28 @@ export class VerticalNavbar {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
 
-  readonly navItems: NavItem[] = [
-    { icon: 'fas fa-home', label: 'Home', route: '/home' },
-    { icon: 'fas fa-map', label: 'Map', route: '/maps' },
-    { icon: 'fas fa-exclamation-triangle', label: 'Incidents', route: '/incidents' },
-    { icon: 'fas fa-chart-bar', label: 'Analytics', route: '/analytics' },
-    { icon: 'fas fa-user', label: 'Profile', route: '/profile' },
-  ];
+  readonly navItems = computed<NavItem[]>(() => {
+    const base: NavItem[] = [
+      { icon: 'fas fa-home', label: 'Home', route: '/home' },
+      { icon: 'fas fa-map', label: 'Map', route: '/maps' },
+      { icon: 'fas fa-exclamation-triangle', label: 'Incidents', route: '/incidents' },
+      { icon: 'fas fa-chart-bar', label: 'Analytics', route: '/analytics' },
+      { icon: 'fas fa-user', label: 'Profile', route: '/profile' },
+    ];
+
+    const user = this.auth.currentUser();
+    const roles: string[] = user?.roles ?? [];
+
+    if (roles.includes('Municipality') || roles.includes('Admin')) {
+      base.push({ icon: 'fas fa-building', label: 'Municipality', route: '/municipality' });
+    }
+
+    if (roles.includes('Admin')) {
+      base.push({ icon: 'fas fa-shield-alt', label: 'Admin', route: '/admin' });
+    }
+
+    return base;
+  });
 
   toggleCollapse(): void {
     this.collapsed.update((v) => !v);

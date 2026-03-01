@@ -1,0 +1,20 @@
+<div class="chart-container">
+    <h3 class="chart-title">Incidents by Category</h3>
+    @if (categories().length === 0) {
+    <p class="no-data">No category data available.</p>
+    } @else {
+    <div class="bars">
+        @for (cat of categories(); track cat.categoryId) {
+        <div class="bar-row">
+            <span class="bar-label">{{ cat.categoryName }}</span>
+            <div class="bar-track">
+                <div class="bar-fill" [style.width]="barWidth(cat.count)">
+                    <span class="bar-value">{{ cat.count }}</span>
+                </div>
+            </div>
+            <span class="bar-pct">{{ cat.percentage }}%</span>
+        </div>
+        }
+    </div>
+    }
+</div>
