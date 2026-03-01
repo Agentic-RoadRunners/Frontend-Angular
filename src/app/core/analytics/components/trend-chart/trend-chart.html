@@ -1,0 +1,31 @@
+<div class="chart-container">
+    <div class="chart-header">
+        <h3 class="chart-title">Incident Trends (Last 30 Days)</h3>
+        <div class="chart-summary">
+            <span class="summary-badge total"><i class="fas fa-exclamation-triangle"></i> {{ totalIncidents() }}
+                reported</span>
+            <span class="summary-badge resolved"><i class="fas fa-check-circle"></i> {{ totalResolved() }}
+                resolved</span>
+        </div>
+    </div>
+    @if (trends().length === 0) {
+    <p class="no-data">No trend data available.</p>
+    } @else {
+    <div class="bar-chart">
+        @for (d of trends(); track d.date) {
+        <div class="column" [title]="d.date + ': ' + d.count + ' incidents'">
+            <div class="column-bars">
+                <div class="column-bar total" [style.height]="barHeight(d.count)"></div>
+                <div class="column-bar resolved" [style.height]="barHeight(d.resolved)"></div>
+            </div>
+            @if (trends().length <= 15) { <span class="column-label">{{ formatDate(d.date) }}</span>
+                }
+        </div>
+        }
+    </div>
+    <div class="legend">
+        <span class="legend-item"><span class="dot total"></span>Reported</span>
+        <span class="legend-item"><span class="dot resolved"></span>Resolved</span>
+    </div>
+    }
+</div>
