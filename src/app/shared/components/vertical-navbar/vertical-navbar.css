@@ -92,6 +92,16 @@
   box-shadow: 0 0 8px rgba(34, 211, 238, 0.8);
 }
 
+.nav-item:nth-child(6):has(.nav-link.active)::before {
+  background: #0ea5e9;
+  box-shadow: 0 0 8px rgba(14, 165, 233, 0.8);
+}
+
+.nav-item:nth-child(7):has(.nav-link.active)::before {
+  background: #f43f5e;
+  box-shadow: 0 0 8px rgba(244, 63, 94, 0.8);
+}
+
 .nav-link {
   display: flex;
   align-items: center;
@@ -160,6 +170,18 @@
   filter: drop-shadow(0 0 4px rgba(34, 211, 238, 0.4));
 }
 
+/* Municipality – sky-blue */
+.nav-item:nth-child(6) .nav-icon {
+  color: #0ea5e9;
+  filter: drop-shadow(0 0 4px rgba(14, 165, 233, 0.4));
+}
+
+/* Admin – rose */
+.nav-item:nth-child(7) .nav-icon {
+  color: #f43f5e;
+  filter: drop-shadow(0 0 4px rgba(244, 63, 94, 0.4));
+}
+
 /* Hover: glow & slight scale-up */
 .nav-link:hover .nav-icon {
   transform: scale(1.15);
@@ -185,6 +207,14 @@
   filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.75));
 }
 
+.nav-item:nth-child(6) .nav-link:hover .nav-icon {
+  filter: drop-shadow(0 0 8px rgba(14, 165, 233, 0.75));
+}
+
+.nav-item:nth-child(7) .nav-link:hover .nav-icon {
+  filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.75));
+}
+
 /* Active: keep icon color, stronger glow */
 .nav-item:nth-child(1) .nav-link.active .nav-icon {
   filter: drop-shadow(0 0 10px rgba(245, 158, 11, 1));
@@ -204,6 +234,14 @@
 
 .nav-item:nth-child(5) .nav-link.active .nav-icon {
   filter: drop-shadow(0 0 10px rgba(34, 211, 238, 1));
+}
+
+.nav-item:nth-child(6) .nav-link.active .nav-icon {
+  filter: drop-shadow(0 0 10px rgba(14, 165, 233, 1));
+}
+
+.nav-item:nth-child(7) .nav-link.active .nav-icon {
+  filter: drop-shadow(0 0 10px rgba(244, 63, 94, 1));
 }
 
 .nav-label {
