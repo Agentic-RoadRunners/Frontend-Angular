@@ -1,0 +1,49 @@
+<div class="panel">
+    <div class="panel-header">
+        <h3><i class="fas fa-eye"></i> Watched Areas</h3>
+        <button class="btn-close" (click)="showForm.set(false)" title="Close">
+            <!-- panel is toggled from parent -->
+        </button>
+    </div>
+
+    @if (isLoading()) {
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    } @else {
+    <ul class="area-list">
+        @for (area of areas(); track area.id) {
+        <li class="area-item">
+            <div class="area-info">
+                <span class="area-label">{{ area.label || 'Unnamed Area' }}</span>
+                <span class="area-coords">{{ area.latitude.toFixed(4) }}, {{ area.longitude.toFixed(4) }}</span>
+                <span class="area-radius">{{ area.radiusInMeters ?? 500 }}m radius</span>
+            </div>
+            <button class="btn-icon btn-danger" title="Remove" (click)="deleteArea(area.id)">
+                <i class="fas fa-trash"></i>
+            </button>
+        </li>
+        } @empty {
+        <li class="empty-msg">No watched areas yet.</li>
+        }
+    </ul>
+
+    @if (showForm()) {
+    <div class="add-form">
+        <input type="text" class="form-input" placeholder="Area label (optional)" [(ngModel)]="formLabel" />
+        <div class="radius-row">
+            <label>Radius (m):</label>
+            <input type="number" class="form-input form-input-sm" [(ngModel)]="formRadius" min="100" max="10000" />
+        </div>
+        <p class="hint">Click on the map to set the center point.</p>
+        <div class="form-actions">
+            <button class="btn btn-secondary" (click)="cancelForm()">Cancel</button>
+        </div>
+    </div>
+    } @else {
+    <button class="btn btn-primary btn-add" (click)="openForm()">
+        <i class="fas fa-plus"></i> Add Watched Area
+    </button>
+    }
+    }
+</div>
