@@ -1,5 +1,5 @@
-import { Component, input, output, signal, inject } from '@angular/core';
-import { switchMap, catchError, of, map } from 'rxjs';
+import { Component, input, output, signal, inject, OnDestroy } from '@angular/core';
+import { switchMap, catchError, of, map, Subscription } from 'rxjs';
 import { JourneyService } from '../../../../shared/services/journey.service';
 import { getCategoryStyleByName } from '../../../../shared/constants';
 import {
@@ -29,7 +29,7 @@ const ROUTE_DISTANCE_THRESHOLD_M = 10;
   templateUrl: './route-planner.html',
   styleUrl: './route-planner.css',
 })
-export class RoutePlanner {
+export class RoutePlanner implements OnDestroy {
   readonly startPoint = input<{ lat: number; lng: number } | null>(null);
   readonly endPoint = input<{ lat: number; lng: number } | null>(null);
 
@@ -38,6 +38,7 @@ export class RoutePlanner {
   readonly journeyEnded = output<JourneyEndedEvent>();
 
   private readonly journeyService = inject(JourneyService);
+  private endSub?: Subscription;
 
   state = signal<PlannerState>('idle');
   minimized = signal(false);
@@ -58,12 +59,28 @@ export class RoutePlanner {
   }
 
   close(): void {
+    // End the backend journey silently if it's currently active
+    if (this.state() === 'active') {
+      this.endSub = this.journeyService.endJourney().subscribe({
+        error: (err) => console.warn('Silent journey end failed:', err),
+      });
+    }
     this.state.set('idle');
     this.journeyInfo.set(null);
     this.errorMessage.set(null);
     this.routeIncidents.set([]);
     this.minimized.set(false);
     this.routeCleared.emit();
+  }
+
+  ngOnDestroy(): void {
+    // Clean up: end any active journey when the component is destroyed
+    if (this.state() === 'active') {
+      this.journeyService.endJourney().subscribe({
+        error: (err) => console.warn('Destroy journey end failed:', err),
+      });
+    }
+    this.endSub?.unsubscribe();
   }
 
   startJourney(): void {
@@ -107,7 +124,8 @@ export class RoutePlanner {
         },
         error: (err) => {
           console.error('Journey start failed:', err);
-          this.errorMessage.set('Failed to start journey. Please try again.');
+          const msg = err?.error?.message || 'Failed to start journey. Please try again.';
+          this.errorMessage.set(msg);
           this.state.set('idle');
         },
       });
@@ -128,7 +146,8 @@ export class RoutePlanner {
       },
       error: (err) => {
         console.error('Journey end failed:', err);
-        this.errorMessage.set('Failed to end journey. Please try again.');
+        const msg = err?.error?.message || 'Failed to end journey. Please try again.';
+        this.errorMessage.set(msg);
         this.state.set('active');
       },
     });
