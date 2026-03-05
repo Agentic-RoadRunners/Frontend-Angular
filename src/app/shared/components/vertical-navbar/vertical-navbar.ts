@@ -25,7 +25,6 @@ export class VerticalNavbar {
       { icon: 'fas fa-home', label: 'Home', route: '/home' },
       { icon: 'fas fa-map', label: 'Map', route: '/maps' },
       { icon: 'fas fa-exclamation-triangle', label: 'Incidents', route: '/incidents' },
-      { icon: 'fas fa-chart-bar', label: 'Analytics', route: '/analytics' },
       { icon: 'fas fa-user', label: 'Profile', route: '/profile' },
     ];
 
@@ -33,6 +32,7 @@ export class VerticalNavbar {
     const roles: string[] = user?.roles ?? [];
 
     if (roles.includes('Municipality') || roles.includes('Admin')) {
+      base.push({ icon: 'fas fa-chart-bar', label: 'Analytics', route: '/analytics' });
       base.push({ icon: 'fas fa-building', label: 'Municipality', route: '/municipality' });
     }
 
