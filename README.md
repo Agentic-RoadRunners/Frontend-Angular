@@ -171,7 +171,7 @@ All feature routes use **lazy loading** via `loadComponent`.
 | `` (default) | redirect → `/home` | — | — |
 | `**` (wildcard) | redirect → `/home` | — | — |
 
-**Role IDs**: User = 1, Moderator = 2, Admin = 3, Municipality = 4
+**Role IDs**: User = 1, Admin = 3, Municipality = 4
 
 ---
 
@@ -400,7 +400,6 @@ Accessible to **Admin** (role 3) users only.
 | Role | ID | Access |
 |---|---|---|
 | User | 1 | Home, Maps, Incidents, Analytics, Profile |
-| Moderator | 2 | Same as User |
 | Admin | 3 | All pages including Admin & Municipality |
 | Municipality | 4 | All User pages + Municipality page |
 
