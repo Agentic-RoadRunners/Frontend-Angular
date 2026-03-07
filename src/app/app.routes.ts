@@ -12,5 +12,6 @@ export const routes: Routes = [
   { path: 'profile', canActivate: [authGuard], loadComponent: () => import('./core/profile/page/profile-page').then(m => m.ProfilePage) },
   { path: 'municipality', canActivate: [authGuard, roleGuard('Municipality', 'Admin')], loadComponent: () => import('./core/municipality/page/municipality-page').then(m => m.MunicipalityPage) },
   { path: 'admin', canActivate: [authGuard, roleGuard('Admin')], loadComponent: () => import('./core/admin/page/admin-page').then(m => m.AdminPage) },
+  { path: 'knowledge-graph', canActivate: [authGuard], loadComponent: () => import('./core/knowledge-graph/page/knowledge-graph-page').then(m => m.KnowledgeGraphPage) },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];

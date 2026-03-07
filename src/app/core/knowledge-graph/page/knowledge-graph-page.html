@@ -1,0 +1,44 @@
+<div class="kg-page">
+    <!-- Top Bar -->
+    <header class="page-top-bar">
+        <div class="bar-left">
+            <i class="fas fa-project-diagram bar-icon"></i>
+            <h1>Knowledge Graph</h1>
+            @if (metadata(); as m) {
+            <span class="meta-badge">{{ m.total_nodes }} nodes · {{ m.total_edges }} edges</span>
+            }
+        </div>
+        <button class="btn-refresh" (click)="loadGraph()" [disabled]="isLoading()">
+            <i class="fas fa-rotate-right" [class.spinning]="isLoading()"></i>
+            Refresh
+        </button>
+    </header>
+
+    @if (isLoading()) {
+    <div class="state-container">
+        <div class="spinner"></div>
+        <p>Bilgi grafiği yükleniyor…</p>
+    </div>
+    } @else if (hasError()) {
+    <div class="state-container state-error">
+        <i class="fas fa-circle-exclamation"></i>
+        <p>Bilgi grafiği yüklenemedi.</p>
+        <button class="btn-retry" (click)="loadGraph()">
+            <i class="fas fa-rotate-right"></i> Retry
+        </button>
+    </div>
+    } @else {
+    <div class="content-area">
+        <!-- Left: D3 Force Graph (70%) -->
+        <div class="graph-panel">
+            <app-force-graph [nodes]="nodes()" [edges]="edges()" [highlightIds]="highlightIds()"
+                (nodeClicked)="onNodeClicked($event)" />
+        </div>
+
+        <!-- Right: Chat Sidebar (30%) -->
+        <div class="chat-panel">
+            <app-chat-sidebar [selectedNode]="selectedNode()" (highlightNodes)="onHighlightNodes($event)" />
+        </div>
+    </div>
+    }
+</div>

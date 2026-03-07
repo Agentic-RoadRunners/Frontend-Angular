@@ -1,0 +1,34 @@
+<div #graphContainer class="graph-container">
+    <!-- Legend overlay (top-left) -->
+    <div class="graph-legend">
+        <div class="legend-item">
+            <span class="legend-dot dot-incident"></span>
+            <span class="legend-label">Incident</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-dot dot-category"></span>
+            <span class="legend-label">Category</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-dot dot-municipality"></span>
+            <span class="legend-label">Municipality</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-dot dot-cluster"></span>
+            <span class="legend-label">Cluster</span>
+        </div>
+    </div>
+
+    <!-- Zoom controls (bottom-right) -->
+    <div class="zoom-controls">
+        <button class="zoom-btn" title="Zoom in" (click)="zoomIn()">
+            <i class="fas fa-plus"></i>
+        </button>
+        <button class="zoom-btn" title="Zoom out" (click)="zoomOut()">
+            <i class="fas fa-minus"></i>
+        </button>
+        <button class="zoom-btn" title="Fit to screen" (click)="fitToScreen()">
+            <i class="fas fa-expand"></i>
+        </button>
+    </div>
+</div>

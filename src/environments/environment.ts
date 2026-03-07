@@ -1,6 +1,7 @@
 export const environment = {
   production: false,
   apiUrl: 'https://localhost:9001/api',
+  aiServiceUrl: 'http://localhost:8000',
   signalrUrl: 'https://localhost:9001',
   logLevel: 'verbose',
   mapbox: {

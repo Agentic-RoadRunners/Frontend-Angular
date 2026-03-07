@@ -29,6 +29,8 @@
     "@angular/platform-browser": "^20.3.0",
     "@angular/router": "^20.3.0",
     "@fortawesome/fontawesome-free": "^6.5.1",
+    "@types/d3": "^7.4.3",
+    "d3": "^7.9.0",
     "leaflet": "^1.9.4",
     "leaflet.heat": "^0.2.0",
     "rxjs": "~7.8.0",

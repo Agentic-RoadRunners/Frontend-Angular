@@ -1,0 +1,70 @@
+<div class="sidebar">
+    <!-- Header -->
+    <div class="sidebar-header">
+        <span class="pulse-dot"></span>
+        <span class="header-title">SafeRoad AI</span>
+    </div>
+    <div class="header-divider"></div>
+
+    <!-- Messages -->
+    <div class="messages" #scrollContainer>
+        @for (msg of messages(); track $index) {
+        <div class="message" [class]="'msg-' + msg.role" [class.msg-node-click]="msg.source === 'node-click'">
+
+            @if (msg.role === 'system') {
+            <!-- System message -->
+            <div class="msg-system-content">
+                <i class="fas fa-info-circle"></i>
+                <span>{{ msg.content }}</span>
+            </div>
+            } @else if (msg.role === 'assistant') {
+            <!-- AI message -->
+            <div class="msg-avatar assistant-avatar">🤖</div>
+            <div class="msg-body">
+                <div class="msg-bubble-wrap">
+                    <div class="accent-line"></div>
+                    <div class="msg-bubble">{{ msg.content }}</div>
+                </div>
+                <span class="msg-time">{{ msg.timestamp | date:'HH:mm' }}</span>
+            </div>
+            } @else {
+            <!-- User message -->
+            <div class="msg-body msg-body-user">
+                <div class="msg-bubble-wrap">
+                    @if (msg.source === 'node-click') {
+                    <div class="accent-line accent-line-node"></div>
+                    }
+                    <div class="msg-bubble">{{ msg.content }}</div>
+                </div>
+                <span class="msg-time">{{ msg.timestamp | date:'HH:mm' }}</span>
+            </div>
+            }
+        </div>
+        }
+
+        <!-- Typing indicator -->
+        @if (isLoading()) {
+        <div class="message msg-assistant">
+            <div class="msg-avatar assistant-avatar">🤖</div>
+            <div class="msg-body">
+                <div class="msg-bubble typing">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+
+    <!-- Input -->
+    <div class="input-separator"></div>
+    <div class="input-area">
+        <textarea class="chat-input" rows="1" placeholder="Bir soru sorun…" [value]="inputText()"
+            (input)="updateInput($any($event.target).value)" (keydown)="onKeyDown($event)"
+            [disabled]="isLoading()"></textarea>
+        <button class="send-btn" (click)="sendMessage()" [disabled]="isLoading() || !inputText().trim()" title="Gönder">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+    </div>
+</div>

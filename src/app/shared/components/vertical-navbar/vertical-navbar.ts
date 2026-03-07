@@ -26,6 +26,7 @@ export class VerticalNavbar {
       { icon: 'fas fa-map', label: 'Map', route: '/maps' },
       { icon: 'fas fa-exclamation-triangle', label: 'Incidents', route: '/incidents' },
       { icon: 'fas fa-user', label: 'Profile', route: '/profile' },
+      { icon: 'fas fa-project-diagram', label: 'Knowledge Graph', route: '/knowledge-graph' },
     ];
 
     const user = this.auth.currentUser();
