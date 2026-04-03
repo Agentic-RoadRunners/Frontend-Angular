@@ -20,6 +20,7 @@ export interface IncidentResponse {
   commentCount: number;
   photoUrls: string[];
   createdAt: string;
+  severity?: string;   // Neo4j AI analizi tamamlanınca dolar (low|medium|high|critical)
 }
 
 /** Embedded comment inside IncidentDetailResponse */
