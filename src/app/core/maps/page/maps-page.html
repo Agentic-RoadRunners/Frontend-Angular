@@ -1,4 +1,24 @@
 <div class="maps-page">
+  <!-- Toast: genel bildirim -->
+  @if (toastMessage()) {
+  <div class="toast" [class.toast-success]="toastType() === 'success'"
+       [class.toast-error]="toastType() === 'error'"
+       [class.toast-info]="toastType() === 'info'">
+    {{ toastMessage() }}
+  </div>
+  }
+
+  <!-- Toast: AI analizi tamamlandı (tıklanabilir) -->
+  @if (aiToastVisible()) {
+  <div class="toast toast-info toast-ai">
+    <i class="fas fa-magnifying-glass"></i>
+    <span>🔍 AI analizi tamamlandı! Knowledge Graph güncellendi.</span>
+    <button class="toast-link" (click)="navigateToKG()">
+      Knowledge Graph'ta görüntüle →
+    </button>
+  </div>
+  }
+
   <!-- Toolbar -->
   <header class="toolbar">
     <div class="toolbar-left"></div>
