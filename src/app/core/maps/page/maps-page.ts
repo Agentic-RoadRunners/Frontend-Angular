@@ -1,5 +1,5 @@
-import { Component, OnInit, viewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, viewChild, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MapView, MapMarker, HeatPoint, MapClickEvent } from '../components/map-view/map-view';
 import { IncidentForm, IncidentFormData } from '../components/incident-form/incident-form';
@@ -55,6 +55,11 @@ export class MapsPage implements OnInit {
   isPickingWatchedArea = false;
   private watchedAreasPanel = viewChild<WatchedAreasPanel>('watchedAreasPanel');
 
+  // ── Toast state ───────────────────────────────────
+  readonly toastMessage = signal('');
+  readonly toastType = signal<'success' | 'error' | 'info'>('success');
+  readonly aiToastVisible = signal(false);
+
   // ── Query params (fly-to) ─────────────────────────
   private targetLat: number | null = null;
   private targetLng: number | null = null;
@@ -63,6 +68,7 @@ export class MapsPage implements OnInit {
   constructor(
     private incidentService: IncidentsService,
     private route: ActivatedRoute,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -226,6 +232,16 @@ export class MapsPage implements OnInit {
     this.verificationIncidents = [];
   }
 
+  private showToast(msg: string, type: 'success' | 'error' | 'info', durationMs = 4000): void {
+    this.toastMessage.set(msg);
+    this.toastType.set(type);
+    setTimeout(() => this.toastMessage.set(''), durationMs);
+  }
+
+  navigateToKG(): void {
+    this.router.navigate(['/knowledge-graph']);
+  }
+
   onIncidentSubmit(data: IncidentFormData): void {
     const localId = this.mapView().addIncidentMarker(data);
     this.showIncidentForm = false;
@@ -236,6 +252,11 @@ export class MapsPage implements OnInit {
         if (response.succeeded) {
           console.log('✅ Incident created:', response.data);
           this.loadIncidents();
+          this.showToast('✅ Olayınız kaydedildi! AI analizi arka planda başlatıldı...', 'success', 4000);
+          setTimeout(() => {
+            this.aiToastVisible.set(true);
+            setTimeout(() => this.aiToastVisible.set(false), 8000);
+          }, 60000);
         } else {
           console.error('❌ Incident creation failed:', response.message);
           this.mapView().removeIncidentMarker(localId);
