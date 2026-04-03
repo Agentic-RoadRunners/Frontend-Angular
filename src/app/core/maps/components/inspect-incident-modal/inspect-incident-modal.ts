@@ -208,6 +208,10 @@ export class InspectIncidentModal implements OnInit, OnChanges {
     this.router.navigate(['/login']);
   }
 
+  navigateToKG(): void {
+    this.router.navigate(['/knowledge-graph']);
+  }
+
   get statusColor(): string {
     const map: Record<string, string> = {
       Pending: '#f97316',

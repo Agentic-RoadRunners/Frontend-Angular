@@ -106,6 +106,16 @@
         </div>
       </section>
 
+      <!-- AI Knowledge Graph butonu -->
+      @if (incident().severity) {
+        <section class="section kg-section">
+          <button class="btn-kg" (click)="navigateToKG()">
+            <i class="fas fa-diagram-project"></i>
+            Knowledge Graph'ta Görüntüle
+          </button>
+        </section>
+      }
+
       <!-- Verification actions -->
       <section class="section verification-section">
         <h3><i class="fas fa-shield-alt"></i> Verification</h3>

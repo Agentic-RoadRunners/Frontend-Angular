@@ -619,3 +619,29 @@
     max-width: 160px;
   }
 }
+
+/* ── Knowledge Graph butonu ─────────────── */
+.kg-section {
+  padding-top: 0;
+}
+
+.btn-kg {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.65rem 1rem;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  border-radius: 0.5rem;
+  color: #818cf8;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.btn-kg:hover {
+  background: rgba(99, 102, 241, 0.2);
+  border-color: rgba(99, 102, 241, 0.55);
+}
