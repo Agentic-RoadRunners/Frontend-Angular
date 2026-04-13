@@ -49,6 +49,13 @@ export class ChatSidebar implements OnChanges, AfterViewChecked {
 
     private conversationHistory: ChatMessage[] = [];
     private shouldScroll = false;
+    private readonly threadId: string = (() => {
+        const stored = localStorage.getItem('kg_thread_id');
+        if (stored) return stored;
+        const id = crypto.randomUUID();
+        localStorage.setItem('kg_thread_id', id);
+        return id;
+    })();
 
     // ── Explain on node selection ─────────────────────────────
     ngOnChanges(changes: SimpleChanges): void {
@@ -94,7 +101,7 @@ export class ChatSidebar implements OnChanges, AfterViewChecked {
 
         this.conversationHistory.push({ role: 'user', content: text });
 
-        this.kgService.chat(text, this.conversationHistory).subscribe({
+        this.kgService.chat(text, this.conversationHistory, this.threadId).subscribe({
             next: (res) => {
                 this.addMessage('assistant', res.answer);
                 this.conversationHistory.push({ role: 'assistant', content: res.answer });
