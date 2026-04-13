@@ -50,6 +50,7 @@ export interface ChatMessage {
 export interface ChatRequest {
     message: string;
     conversation_history: ChatMessage[];
+    thread_id: string;
 }
 
 export interface ChatResponse {
