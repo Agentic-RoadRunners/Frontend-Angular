@@ -39,10 +39,11 @@ export class KnowledgeGraphService {
         });
     }
 
-    chat(message: string, history: { role: string; content: string }[]): Observable<ChatResponse> {
+    chat(message: string, history: { role: string; content: string }[], threadId: string): Observable<ChatResponse> {
         const body: ChatRequest = {
             message,
             conversation_history: history as ChatRequest['conversation_history'],
+            thread_id: threadId,
         };
         return this.http.post<ChatResponse>(`${this.baseUrl}/chat`, body, {
             headers: this.authHeaders(),
